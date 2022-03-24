@@ -1,0 +1,13 @@
+location: gitman_sources
+sources:
+  - name: g.h
+    type: git
+    repo: git@github.com:mrpossoms/g.h.git
+    sparse_paths:
+      -
+    rev: main 
+sources_locked:
+  - 
+default_group: ''
+groups:
+  -
