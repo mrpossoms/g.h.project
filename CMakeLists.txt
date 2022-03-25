@@ -43,7 +43,6 @@ set(SOURCE ${SOURCE} src/main.cpp)
 
 # add game includes
 include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/renderers)
 include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/gitman_sources/g.h/inc)
 
 add_subdirectory(gitman_sources/g.h)
