@@ -24,12 +24,18 @@ if(POLICY CMP0072)
   set(OpenGL_GL_PREFERENCE GLVND)
 endif()
 
+
+if(WIN32)
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+else()
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -Wall -g -O0")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -Wall -g -O0")
-
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} -Wall -O3")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -Wall -O3")
-
+endif()
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -53,21 +59,16 @@ set(CMAKE_EXE_LINKER_FLAGS "-s USE_GLFW=3 -s FULL_ES3=1 -s ALLOW_MEMORY_GROWTH=1
 set(CMAKE_EXECUTABLE_SUFFIX ".html")
 endif()
 
-find_package(OpenAL REQUIRED)
+# find_package(OpenAL REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SOURCE})
 
 target_link_libraries(${PROJECT_NAME} g)
 target_link_libraries(${PROJECT_NAME} glfw)
 target_link_libraries(${PROJECT_NAME} ${OPENAL_LIBRARY})
-message("openal: ${OPENAL_LIBRARY}")
+message(">>>openal: ${OPENAL_LIBRARY}")
 
 if (WIN32)
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
-
 message(STATUS ">>> Will copy data directory")
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
                    COMMAND cmake -E copy_directory

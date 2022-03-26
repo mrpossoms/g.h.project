@@ -1,14 +1,14 @@
 #include "g.h"
 #include "state.hpp"
 
-struct game : public g::core
+struct my_game : public g::core
 {
 
 	g::asset::store assets;
 	game::state state;
 
-	game() = default;
-	~game() = default;
+	my_game() = default;
+	~my_game() = default;
 
 	virtual bool initialize()
 	{
@@ -17,7 +17,8 @@ struct game : public g::core
 
 	virtual void update(float dt)
 	{
-
+		glClearColor(0.5, 0.5, 1.0, 1.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 };
@@ -34,7 +35,7 @@ EM_JS(int, canvas_get_height, (), {
 
 int main (int argc, const char* argv[])
 {
-	game my_game;
+	my_game game;
 
 	g::core::opts opts;
 
@@ -51,7 +52,7 @@ int main (int argc, const char* argv[])
 	opts.gfx.fullscreen = false;
 #endif
 
-	my_game.start(opts);
+	game.start(opts);
 
 	return 0;
 }

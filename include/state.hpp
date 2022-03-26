@@ -1,6 +1,4 @@
 #pragma once
-#include "level.hpp"
-#include "particles.hpp"
 
 using namespace xmath;
 
