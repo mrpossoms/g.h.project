@@ -109,6 +109,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Install Emscripten
+      run: ./setup-emscripten.sh
     
     - name: Setup Gitman
       run: pip3 install gitman
@@ -116,9 +119,6 @@ jobs:
     - name: Install Deps
       # TODO: using libglew-dev is a cheat
       run: gitman install
-
-    - name: Install Emscripten
-      run: ./setup-emscripten.sh
 
 
     - name: Configure CMake
