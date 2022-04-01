@@ -19,6 +19,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses:
     
     - name: Setup Gitman
       run: pip3 install gitman
@@ -40,7 +41,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}} --test-dir tests
+      run: echo 'No tests yet!'
   build-windows:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
     # You can convert this to a matrix build if you need cross-platform coverage.
@@ -70,7 +71,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}} --test-dir tests
+      run: echo 'No tests yet!'
   build-macos:
       # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
       # You can convert this to a matrix build if you need cross-platform coverage.
@@ -80,8 +81,12 @@ jobs:
       steps:
       - uses: actions/checkout@v2
       
-      - name: Setup Gitman
-        run: pip3 install gitman
+      # - name: Setup Gitman
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+        run: pip install gitman
 
       - name: Install Deps
         # TODO: using libglew-dev is a cheat
@@ -100,7 +105,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         # Execute tests defined by the CMake configuration.  
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-        run: ctest -C ${{env.BUILD_TYPE}} --test-dir tests
+        run: echo 'No tests yet!'
   build-web:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
     # You can convert this to a matrix build if you need cross-platform coverage.
