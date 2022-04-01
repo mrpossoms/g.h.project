@@ -110,16 +110,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install Emscripten
-      run: chmod +x setup-emscripten.sh && ./setup-emscripten.sh
-    
     - name: Setup Gitman
-      run: pip3 install gitman web
+      run: pip3 install gitman
 
     - name: Install Deps
       # TODO: using libglew-dev is a cheat
-      run: gitman install
+      run: gitman install web
 
+    - name: Setup Emscripten
+      run: chmod +x setup-emscripten.sh && ./setup-emscripten.sh
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
