@@ -191,5 +191,5 @@ jobs:
 
     - name: Build
       # Build your program with the given configuration
-      run: gitman_sources/emsdk/upstream/emscripten/emcmakecmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run: gitman_sources/emsdk/upstream/emscripten/emcmake cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
       
