@@ -19,13 +19,29 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+        cache: 'pip'
     
+    - name: Cache gitman sources
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-gitman-sources
+      with:
+        path: gitman_sources
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
     - name: Setup Gitman
       run: pip3 install gitman
 
     - name: Install Deps
       # TODO: using libglew-dev is a cheat
-      run: sudo apt update && sudo apt install build-essential libffi-dev libreadline-dev zlib1g-dev libssl-dev libglu1-mesa-dev xorg-dev libglew-dev libopenal-dev --fix-missing && gitman install native
+      run: sudo apt update && sudo apt install build-essential libffi-dev libreadline-dev zlib1g-dev libssl-dev libglu1-mesa-dev xorg-dev libglew-dev libopenal-dev --fix-missing && gitman install native --skip-changes
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -40,7 +56,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}} --test-dir tests
+      run: echo 'No tests yet!'
   build-windows:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
     # You can convert this to a matrix build if you need cross-platform coverage.
@@ -49,13 +65,29 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+        cache: 'pip'
+    
+    - name: Cache gitman sources
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-gitman-sources
+      with:
+        path: gitman_sources
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
     
     - name: Setup Gitman
       run: pip3 install gitman
 
     - name: Install Deps
       # TODO: using libglew-dev is a cheat
-      run: gitman install native
+      run: gitman install native --skip-changes
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -70,7 +102,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}} --test-dir tests
+      run: echo 'No tests yet!'
   build-macos:
       # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
       # You can convert this to a matrix build if you need cross-platform coverage.
@@ -79,13 +111,29 @@ jobs:
 
       steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+          cache: 'pip'
       
-      - name: Setup Gitman
-        run: pip3 install gitman
+      - name: Cache gitman sources
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-gitman-sources
+        with:
+          path: gitman_sources
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Setup Gitman  
+        run: pip install gitman
 
       - name: Install Deps
         # TODO: using libglew-dev is a cheat
-        run: gitman install native
+        run: gitman install native --skip-changes
 
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -100,7 +148,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         # Execute tests defined by the CMake configuration.  
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-        run: ctest -C ${{env.BUILD_TYPE}} --test-dir tests
+        run: echo 'No tests yet!'
   build-web:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
     # You can convert this to a matrix build if you need cross-platform coverage.
@@ -109,17 +157,32 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Install Emscripten
-      run: chmod +x setup-emscripten.sh && ./setup-emscripten.sh
+    - uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+        cache: 'pip'
     
+    - name: Cache gitman sources
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-gitman-sources
+      with:
+        path: gitman_sources
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
     - name: Setup Gitman
       run: pip3 install gitman web
 
     - name: Install Deps
       # TODO: using libglew-dev is a cheat
-      run: gitman install
+      run: gitman install web --skip-changes
 
+    - name: Setup Emscripten
+      run: chmod +x setup-emscripten.sh && ./setup-emscripten.sh
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -128,5 +191,4 @@ jobs:
 
     - name: Build
       # Build your program with the given configuration
-      run: gitman_sources/emsdk/upstream/emscripten/emcmakecmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-      
+      run: gitman_sources/emsdk/upstream/emscripten/emcmake cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
