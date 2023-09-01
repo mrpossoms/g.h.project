@@ -44,14 +44,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # c++ flag
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGL_SILENCE_DEPRECATION")
 
+add_subdirectory(gitman_sources/g.h)
+
 # add all source files
 set(SOURCE ${SOURCE} src/main.cpp)
 
 # add game includes
 include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/gitman_sources/g.h/inc)
-
-add_subdirectory(gitman_sources/g.h)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Emscripten")
 # NOP
